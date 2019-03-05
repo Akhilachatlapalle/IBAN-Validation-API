@@ -1,0 +1,66 @@
+---
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: IBAN validation API
+host: localhost:8080
+
+schemes:
+  - https
+  
+paths:
+  '/validate':
+    get:
+      summary: Validate the given IBAN number
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: iban
+          required: true
+          type: string
+          description: IBAN number
+          x-example: DE89370400440532013000
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/NotFoundResponse'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequestResponse'
+  
+definitions:
+  NotFoundResponse:
+    type: object
+    properties:
+      detail:
+        type: string
+  SuccessResponse:
+    type: object
+    properties:
+      Data:
+        type: string
+        description: Given IBAN is valid
+        example: Given IBAN is valid
+      Status:
+        type: integer
+        description: Status Code
+        example: 200
+  BadRequestResponse:
+    type: object
+    properties:
+      Error:
+        type: string
+        description: Given IBAN is not valid
+        example: Given IBAN is not valid
+      Status:
+        type: integer
+        description: Status Code
+        example: 400
+  
